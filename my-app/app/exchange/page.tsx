@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { getAddress, getBalance } from '../utils/methods'
 import { ExchangeCredit, SetCompany, ShowCredit } from '../contracts/methods'
 import { ToastContainer } from 'react-toastify'
+import Header from '@/components/header'
 
 // Button component
 const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
@@ -135,6 +136,7 @@ export default function Component() {
   }
 
   return (
+    <><Header/>
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <ToastContainer />
       <Card className="w-full max-w-md bg-gray-800 text-gray-100">
@@ -202,5 +204,6 @@ export default function Component() {
         </CardFooter>
       </Card>
     </div>
+    </>
   )
 }
