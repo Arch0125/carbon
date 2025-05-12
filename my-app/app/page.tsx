@@ -76,8 +76,8 @@ export default function Component() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const addr = getAddress();
-      const bal = await getBalance();
+      const addr = getAddress(walletNo);
+      const bal = await getBalance(walletNo);
       setAddress(addr);
       setBalance(Number(bal));
     };
@@ -95,9 +95,10 @@ export default function Component() {
   })
   const [address, setAddress] = useState('')
   const [balance, setBalance] = useState(0)
+  const [walletNo, setWalletNo] = useState(0)
 
 
-  function show(){
+  function show() {
     console.log('Hello')
   }
 
@@ -117,6 +118,15 @@ export default function Component() {
     console.log('Form submitted:', formData)
   }
 
+  const switchWallet = async() => {
+    setWalletNo(prev => (prev + 1) % 2)
+    const addr = getAddress(walletNo);
+    const bal = await getBalance(walletNo);
+    console.log(addr, bal);
+    setAddress(addr);
+    setBalance(Number(bal));
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <ToastContainer />
@@ -127,12 +137,18 @@ export default function Component() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Button 
-              onClick={handleConnect} 
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={switchWallet}
+              hidden={!isConnected}
+            >
+              Switch wallet to {(walletNo+1) % 2}
+            </Button>
+            <Button
+              onClick={handleConnect}
               disabled={isConnected}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isConnected ? `${address}\n Balance : ${balance/1e18} ETH` : 'Connect Wallet'}
+              {isConnected ? `${address}\n Balance : ${balance / 1e18} ETH` : 'Connect Wallet'}
             </Button>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -162,11 +178,11 @@ export default function Component() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button 
-            type="submit" 
-            className="w-full bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed" 
+          <Button
+            type="submit"
+            className="w-full bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             // disabled={!isConnected} 
-            onClick={()=>SetCompany(formData.companyName, Number(formData.updateCredits))}
+            onClick={() => SetCompany(formData.companyName, Number(formData.updateCredits))}
           >
             Sign Up
           </Button>

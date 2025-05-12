@@ -76,8 +76,8 @@ export default function Component() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const addr = getAddress();
-      const bal = await getBalance();
+      const addr = getAddress(walletNo);
+      const bal = await getBalance(walletNo);
       setAddress(addr);
       setBalance(Number(bal));
     };
@@ -91,6 +91,7 @@ export default function Component() {
   const[credits,setCredits] = useState(0);
 
   async function fetchcredit(address:string) {
+    console.log(Number(await ShowCredit(address)))
     setCredits(Number(await ShowCredit(address)))
   }
 
@@ -101,6 +102,7 @@ export default function Component() {
   })
   const [address, setAddress] = useState('')
   const [balance, setBalance] = useState(0)
+  const [walletNo, setWalletNo] = useState(0)
 
 
   function show(){
@@ -123,6 +125,15 @@ export default function Component() {
     console.log('Form submitted:', formData)
   }
 
+  const switchWallet = async() => {
+    setWalletNo(prev => (prev + 1) % 2)
+    const addr = getAddress(walletNo);
+    const bal = await getBalance(walletNo);
+    console.log(addr, bal);
+    setAddress(addr);
+    setBalance(Number(bal));
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
       <ToastContainer />
@@ -133,6 +144,12 @@ export default function Component() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={switchWallet}
+              hidden={!isConnected}
+            >
+              Switch wallet to {(walletNo+1) % 2}
+            </Button>
             <Button 
               onClick={handleConnect} 
               disabled={isConnected}
