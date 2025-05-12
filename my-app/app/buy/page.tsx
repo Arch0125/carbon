@@ -92,7 +92,12 @@ export default function Component() {
   }, []);
 
   const[credits,setCredits] = useState(0);
-  const[vaultdet, setVaultDet] = useState({});
+    interface VaultDetails {
+      bal: number;
+      credit: number;
+    }
+  
+    const [vaultdet, setVaultDet] = useState<VaultDetails>({ bal: 0, credit: 0 });
 
   async function fetchcredit(address:string) {
     setCredits(Number(await ShowCredit(address)))

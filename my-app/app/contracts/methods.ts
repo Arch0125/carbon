@@ -70,5 +70,5 @@ export async function vault(){
     const bal = await provider.getBalance(contractAddress)
     const credit = await contract_r.totalCredit();
     console.log(bal,credit)
-    return {bal,credit}
+    return {bal : Number(bal),credit : Number(credit)}
 }

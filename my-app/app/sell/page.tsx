@@ -80,7 +80,7 @@ export default function Component() {
       const bal = await getBalance(walletNo);
       const vault_det = await vault();
       console.log(vault_det)
-      setVaultDet(vault_det)
+      setVaultDet(vault_det as VaultDetails)
       setAddress(addr);
       setBalance(Number(bal));
     };
@@ -92,7 +92,12 @@ export default function Component() {
   }, []);
 
   const[credits,setCredits] = useState(0);
-  const[vaultdet, setVaultDet] = useState({});
+  interface VaultDetails {
+    bal: number;
+    credit: number;
+  }
+
+  const [vaultdet, setVaultDet] = useState<VaultDetails>({ bal: 0, credit: 0 });
   const[walletNo, setWalletNo] = useState(0);
 
   async function fetchcredit(address:string) {
